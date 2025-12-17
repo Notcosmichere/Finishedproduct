@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Check Program</title>
+    <style>
+        /* CSS for a basic console-like look */
+        body {
+            font-family: monospace;
+            background-color: #1e1e1e;
+            color: #f0f0f0;
+            padding: 20px;
+        }
+        #output {
+            background-color: #000;
+            border: 1px solid #333;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 15px;
+            white-space: pre-wrap; /* Respect newlines */
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 250px;
+            background-color: #333;
+            color: #f0f0f0;
+            border: 1px solid #555;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        /* Color definitions */
+        .color-blue { color: #5B9AFF; }
+        .color-red { color: #FF6B6B; }
+        .color-green { color: #4CAF50; }
+        .color-reset { color: #f0f0f0; } /* Default text color */
+        .header-print { color: #B3B3B3; } /* Slightly different color for initial print */
+    </style>
+</head>
+<body>
+
+    <p class="header-print">PLEASE TYPE YOUR NAME IN SMALL LETTERS</p>
+    <div id="output"></div>
+
+    <div id="input-section">
+        <label for="nameInput">Please enter your name:</label>
+        <input type="text" id="nameInput" autofocus>
+        <button onclick="checkName()">Submit</button>
+    </div>
+
+    <script>
+        // --- JS Variables and Initialization ---
+        const output = document.getElementById('output');
+        const nameInput = document.getElementById('nameInput');
+        const submitButton = document.querySelector('button');
+        const inputSection = document.getElementById('input-section');
+
+        // Required names for the group exit condition
+        const requiredNames = new Set(["ambareesh", "goutham", "aswin", "adhi"]);
+        let foundNames = new Set();
+        let programActive = true;
+
+        // Function to print text to the output area
+        function printToOutput(text, className = 'color-reset') {
+            const line = document.createElement('p');
+            line.className = className;
+            line.innerHTML = text;
+            output.appendChild(line);
+            // Auto-scroll to the bottom
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // Initial required message
+        printToOutput("--- Name Check Required ---", 'color-reset');
+
+        // Main logic function, equivalent to the Python loop body
+        function checkName() {
+            if (!programActive) return; // Stop if program has exited
+
+            const userInput = nameInput.value.trim();
+            const standardizedName = userInput.toLowerCase();
+            let exitNow = false;
+            let message = '';
+
+            nameInput.value = ''; // Clear input field
+
+            // Always display the prompt again before the response
+            printToOutput(`\n--- Name Check Required ---`);
+
+            // --- Conditional Responses (Replicating Python logic) ---
+            if (standardizedName === "avanthika") {
+                // 1. Immediate Exit Condition: Avanthika
+                message = `MY BABY I LOVE YOU SO MUCH. Im sorry you have to go through this. Enta pon ahn ni njn engane enkilum Enthenkilum okke cheyam korach time tha enik ni iland patiladi i love you mwah njn ninne ketiyirikum Promise. 💖`;
+                printToOutput(message, 'color-blue');
+                printToOutput(`🎀 My Favorite Girl Entered. Exiting program immediately.`, 'color-red');
+                exitNow = true;
+
+            } else if (standardizedName === "ameer") {
+                // 2. Immediate Exit Condition: Ameer
+                printToOutput(`🗿Owner Has Entered.`, 'color-red');
+                printToOutput(`👾 SPECIAL CONDITION HAS BEEN MET WELCOME SIR.`, 'color-green');
+                exitNow = true;
+
+            } else if (requiredNames.has(standardizedName)) {
+                
+                // 3. Group Names
+                let response = '';
+                if (standardizedName === "ambareesh") response = `👋 hello KARADI MAMA.`;
+                if (standardizedName === "goutham") response = `🦧 SHADI BROHH!`;
+                if (standardizedName === "aswin") response = `😈 DODGER MAN SUPREMACY!`;
+                if (standardizedName === "adhi") response = `🐮 Amini Pashuu!!`;
+                
+                printToOutput(response, 'color-red');
+                foundNames.add(standardizedName);
+
+                // Check for Group Exit after adding the name
+                if (foundNames.size === requiredNames.size) {
+                    printToOutput(`\n✅ All required names have been entered. Exiting program.`, 'color-green');
+                    exitNow = true;
+                }
+
+            } else {
+                // Default reply
+                message = `🧐 F! YOU, ${userInput}. Your name is not on the list. Please check your credentials.`;
+                printToOutput(message);
+            }
+
+            // --- Program Exit Handling ---
+            if (exitNow) {
+                programActive = false;
+                nameInput.disabled = true;
+                submitButton.disabled = true;
+            }
+        }
+        
+        // Allow pressing Enter key to submit
+        nameInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkName();
+            }
+        });
+
+    </script>
+</body>
+</html>
